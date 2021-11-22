@@ -2,11 +2,13 @@
 const bcrypt = require('bcryptjs');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../models/users');
 // const NotFoundError = require('../errors/NotFoundError');// 404
 const ConflictError = require('../errors/ConflictError');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
-const BadRequestError = require('../errors/BadRequestError');// 400 когда с запросом что-то не так;
+const BadRequestError = require('../errors/BadRequestError');
+const {messageBadRequestError} = require('../utils/constants');
+// 400 когда с запросом что-то не так;
 
 const { NODE_ENV, JWT_SECRET_KEY } = process.env;
 
@@ -56,15 +58,18 @@ module.exports.createUser = (req, res, next) => {
 
 //patch  /users/me обновляет информацию о пользователе (email и имя)
 module.exports.updateUser = (req, res, next) => {
-  const id = req.user._id;
+  req.userId = req.user._id;
   const newName = req.body.name;
-  const newemail = req.body.email;
-  return User.findByIdAndUpdate({ _id: id }, {
-    name: newName,
-    about: newemail,
-  }, { new: true, runValidators: true })
+  const newEmail = req.body.email;
+
+  return User.findByIdAndUpdate(
+    { _id: req.userId },
+    { name: newName,
+    about: newEmail,},
+
+    { new: true, runValidators: true })
     .orFail(() => {
-      throw new BadRequestError('Пользователь  отсутствует');
+      throw new BadRequestError(messageBadRequestError);
     })
     .then((user) => res.status(200).send(user))
     .catch(next);

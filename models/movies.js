@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const isUrl = require('validator/lib/isURL');
-const moviesSchema = new mongoose.Schema({
+const movieSchema = new mongoose.Schema({
   //— страна создания фильма. Обязательное поле-строка.
   country:{
     type: String,
@@ -28,9 +28,7 @@ const moviesSchema = new mongoose.Schema({
   },
  // — ссылка на постер к фильму. Обязательное поле-строка. Запишите её URL-адресом.
   image:{
-    // type: String подумать
-    type: isUrl,//проверить, можно ли так
-  //  default: '',
+    type: String,
     required:true,
     validate: {
       validator: (link) => isUrl(link),
@@ -39,8 +37,7 @@ const moviesSchema = new mongoose.Schema({
   },
   //— ссылка на трейлер фильма. Обязательное поле-строка. Запишите её URL-адресом.
   trailer:{
-    type: isUrl,//проверить, можно ли так
-   // default: '',
+    type: String,
     required:true,
     validate: {
       validator: (link) => isUrl(link),
@@ -49,8 +46,7 @@ const moviesSchema = new mongoose.Schema({
   },
   //— миниатюрное изображение постера к фильму. Обязательное поле-строка. Запишите её URL-адресом.
   thumbnail:{
-    type:isUrl,//проверить, можно ли так
-   // default: '',
+    type: String,
     required:true,
     validate: {
       validator: (link) => isUrl(link),
@@ -66,9 +62,8 @@ const moviesSchema = new mongoose.Schema({
   //— id фильма, который содержится в ответе сервиса MoviesExplorer. Обязательное поле.
 
   movieId:{
-    type: String,
+    type: Number,
     required: true,
-//    ref: 'film', подумать
   },
   //— название фильма на русском языке. Обязательное поле-строка.
   nameRU:{
@@ -90,24 +85,4 @@ const moviesSchema = new mongoose.Schema({
         default: [],// скорее не понадобится, либо да либо нет true-false
       },*/
 });
-module.exports = mongoose.model('movies', moviesSchema);
-/*
-return {
-  data: {
-    id: movies._id,
-    director: movies.director,
-    duration: movies.duration,
-    thumbnail: movies.thumbnail,
-    year: movies.year,
-    description: movies.description,
-    owner:movies.owner,
-    movieId: movies.movieId,
-    nameRU: movies.nameRU,
-    nameEN: movies.nameEN,
-    country: movies.country,
-    trailerLink: movies.trailerLink,
-  },
-};*/
-// "time" : ISODate("2018-04-05T10:08:24.148Z")
-//   bson.EC.DateTime("time", time.Now().UnixNano()/1e6)
-//time.Now().String()
+module.exports = mongoose.model('movies', movieSchema);

@@ -1,6 +1,7 @@
-const validator = require('validator');
+
 const { celebrate, Joi } = require('celebrate');
-//const isUrl = require('validator/lib/isURL');
+const isUrl = require('validator/lib/isURL');
+const validator = require('validator');
 
 const validateURL = (value) => {
   if (!validator.isURL(value, { require_protocol: true })) {
@@ -9,14 +10,14 @@ const validateURL = (value) => {
   return value;
 };
 
-export const loginValidate = celebrate({
+const loginValidate = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
 })
 
-export const updateUserValidate = celebrate({
+const updateUserValidate = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(150).required(),
     email: Joi.string().required().email(),
@@ -24,7 +25,7 @@ export const updateUserValidate = celebrate({
 });
 
 //signup
-export const userValidate = celebrate({
+const userValidate = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
@@ -32,26 +33,26 @@ export const userValidate = celebrate({
   }),
 });
 
-export const idParamsValidator = celebrate({
+const idParamsValidator = celebrate({
   params: Joi.object().keys({
-    movieId: [Joi.string(), Joi.number()].length(24).hex().required(),
+    movieId: Joi.string().length(24).hex().required(),
   }),
 });
 
-export const idValidator = celebrate({
+const idValidator = celebrate({
   body: Joi.object().keys({
-    id: [Joi.string(), Joi.number()].length(24).hex().required(),
+    id: Joi.string().length(24).hex().required(),
   }),
 });
 
-export const movieValidate = celebrate({
+const movieValidate = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(150),
     director: Joi.string().required().min(2).max(150),
     duration: Joi.number().required(),
     year: Joi.string().required().min(2).max(4),
     description: Joi.string().required().min(2).max(3000),
-    movieId: [Joi.string(), Joi.number()].required(),
+    movieId: Joi.string().required(),
     nameRU: Joi.string().required().min(2).max(150),
     nameEN: Joi.string().required().min(2).max(150),
     country: Joi.string().required().min(2).max(150),
@@ -60,3 +61,12 @@ export const movieValidate = celebrate({
     image: Joi.string().required().custom(validateURL),
   })
 });
+
+module.exports = {
+  loginValidate,
+  updateUserValidate,
+  userValidate,
+  idParamsValidator,
+  idValidator,
+  movieValidate,
+};

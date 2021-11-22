@@ -1,4 +1,4 @@
-export const router = require('express').Router();
+ const router = require('express').Router();
 
 const { updateUser } = require('../controllers/users');
 const { getCurrentUser } = require('../controllers/users');
@@ -10,3 +10,4 @@ router.get('/users/me', idValidator, getCurrentUser);
 //обновляет информацию о пользователе (email и имя)
 router.patch('/users/me', updateUserValidate, updateUser);
 
+module.exports = router;

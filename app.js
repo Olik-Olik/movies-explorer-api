@@ -1,5 +1,3 @@
-// старый файл
-
 require('dotenv').config();
 // console.log(process.env.NODE_ENV);
 const cors = require('cors');
@@ -11,14 +9,18 @@ const { errors } = require('celebrate');
 const router = require('express').Router(); // корневой роутер
 // const { logger } = require('express-winston');
 // const rateLimit = require('express-rate-limit');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { requestLogger } = require('./middlewares/logger');
+const { errorLogger } = require('./middlewares/logger');
 const routes = require('./routes/users');
 const moviesRoutes = require('./routes/movies');
 require('./middlewares/auth');
-const { createUser, login } = require('./controllers/users');
-const limiter= require('./utils/limiter');
-const { PORT = 3000 } = process.env;
 const NotFoundError = require('./errors/NotFoundError');
+const adressMongo = require('./utils/constants');
+//const envPORT = require('./utils/constants');
+const { createUser, login } = require('./controllers/users');
+
+// const { PORT = envPORT } = process.env;
+const { PORT = 3627 } = process.env;
 const errorInternalServerError = require('./errors/errorInternalServerError');
 const app = express();
 app.use(helmet());
@@ -26,39 +28,46 @@ app.use(helmet());
 app.disable('x-powered-by'); // отключите заголовок X-Powered-By
 //Если вы используете helmet.js, это будет сделано автоматически
 
-
-const url = 'mongodb://localhost:27017/mestodb';
+const limiter= require('./utils/limiter');
+//const url = adressMongo ;
 const auth = require('./middlewares/auth');
 const { loginValidate, userValidate } = require('./validator/validator');
 
 // Массив доменов, с которых разрешены кросс-доменные запросы
+/*
 const httpCors = [
-/*  'https://back.nomoredomains.work',
+/!*  'https://back.noFmoredomains.work',
   'https://front.nomoredomains.work',
   'http://back.nomoredomains.work',
   'http://front.nomoredomains.work',
- */'http://localhost:3624',
+ *!/'http://localhost:3627',
+   //'http://localhost:3000',
 ];
+*/
 
 const options = {
-  origin: httpCors,
+ // origin: httpCors,
   method: ['GET,HEAD,PUT,PATCH,POST,DELETE'],
   preflightContinue: false,
   optionsSuccessStatus: 200,
   credentials: true,
 };
+
 //Все ВСЕ ВСЕ перечислить константы, сообщения словами из утиля
 const { messageError, messageNotFoundError } = require('./utils/constants');
+
 
 
 app.use(cors(options));
 
 
-mongoose.connect(url,
-  { useNewUrlParser: true },
-  { useCreateIndex: true },
-  { useFindAndModify: false })
-  .then(() => console.log('connect mongo'));
+mongoose.connect(
+  //adressMongo,
+  'mongodb://localhost:27017/mestodb',
+  { useNewUrlParser: true },);
+//  { useCreateIndex: true },
+ // { useFindAndModify: false })
+ // .then(() => console.log('connect mongo'));
 
 mongoose.set('useCreateIndex', true);
 
@@ -88,6 +97,7 @@ app.post('/signup', userValidate, createUser);
 app.use(auth);
 app.use(routes);
 app.use(moviesRoutes);
+
 app.use(() => {
   throw new NotFoundError(messageNotFoundError);
 });
