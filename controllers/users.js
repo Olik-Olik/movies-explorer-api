@@ -29,6 +29,7 @@ module.exports.getCurrentUser = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
+  console.log(req.body.email)
   // eslint-disable-next-line no-unused-expressions
   bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({

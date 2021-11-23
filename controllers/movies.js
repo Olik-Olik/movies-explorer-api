@@ -35,7 +35,7 @@ module.exports.createMovie = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  const movieId = req.params.id;
+  const movieId = req.params.movieId;
   const owner = req.user._id;
   Movie.findById({ _id: movieId })
     //  выдает ошибку, если ни один документ не соответствует id

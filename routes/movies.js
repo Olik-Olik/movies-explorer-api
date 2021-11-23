@@ -11,6 +11,6 @@ moviesRouter.get('/movies', movieValidate, getMovies);
 // image, trailer, nameRU, nameEN и thumbnail, movieId
 moviesRouter.post('/movies', idParamsValidator, movieValidate, createMovie);
 // удаляет сохранённый фильм по id
-moviesRouter.delete('/movies/movieId', idParamsValidator, deleteMovie);
+moviesRouter.delete('/movies/:movieId', idParamsValidator, deleteMovie);
 
 module.exports = moviesRouter;

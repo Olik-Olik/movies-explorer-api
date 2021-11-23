@@ -14,6 +14,16 @@ const messageValidateNameEn = 'Название фильма на английс
 const urlMongo = 'mongodb://localhost:27017/mestodb';
 const messageEmail = 'Измените формат почты - он неправильный';
 
+
+const httpCors = [
+  'https://diplomback.nomoredomains.work',
+  'https://diplomfront.nomoredomains.work',
+  'http://diplomback.nomoredomains.work',
+  'http://diplomfront.nomoredomains.work',
+  'http://localhost:3627',
+   //'http://localhost:3000',
+];
+
 // const  envPORT = 3624  ;
 module.exports = {
   messageNotFoundError,
@@ -29,4 +39,6 @@ module.exports = {
   messageValidateNameEn,
   urlMongo,
   messageEmail,
+  httpCors,
+
 };
