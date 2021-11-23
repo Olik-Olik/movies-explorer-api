@@ -7,21 +7,21 @@ const User = require('../models/users');
 const ConflictError = require('../errors/ConflictError');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
-const {messageBadRequestError} = require('../utils/constants');
+const { messageBadRequestError } = require('../utils/constants');
 // 400 когда с запросом что-то не так;
 
 const { NODE_ENV, JWT_SECRET_KEY } = process.env;
 
-//myUserId = id
-//get /users/me
+// myUserId = id
+// get /users/me
 module.exports.getCurrentUser = (req, res, next) => {
   const id = req.user._id;
-//  console.log(id);
+  //  console.log(id);
   return User.findById({ _id: id })
     /*  .orFail(() => {
       console.log('user not found');
        throw new NotFoundError('Пользователь по данному id отсутствует  в базе');
-     })*/
+     }) */
     .then((user) => {
       res.status(200).send(user);
     })
@@ -47,16 +47,15 @@ module.exports.createUser = (req, res, next) => {
       if (eerr.code === 11000) {
         next(new ConflictError('Такой email в базе есть'));
       }
-      if (eerr.name === 'ValidationError'){
-        next(new BadRequestError('Ошибка запроса Невалидный id пользователя '))
-      }
-        else {
+      if (eerr.name === 'ValidationError') {
+        next(new BadRequestError('Ошибка запроса Невалидный id пользователя '));
+      } else {
         next(eerr);
       }
     });
 };
 
-//patch  /users/me обновляет информацию о пользователе (email и имя)
+// patch  /users/me обновляет информацию о пользователе (email и имя)
 module.exports.updateUser = (req, res, next) => {
   req.userId = req.user._id;
   const newName = req.body.name;
@@ -64,17 +63,19 @@ module.exports.updateUser = (req, res, next) => {
 
   return User.findByIdAndUpdate(
     { _id: req.userId },
-    { name: newName,
-    about: newEmail,},
+    {
+      name: newName,
+      about: newEmail,
+    },
 
-    { new: true, runValidators: true })
+    { new: true, runValidators: true },
+  )
     .orFail(() => {
       throw new BadRequestError(messageBadRequestError);
     })
     .then((user) => res.status(200).send(user))
     .catch(next);
 };
-
 
 module.exports.login = (req, res, next) => {
   const userEmail = req.body.email;
@@ -84,12 +85,13 @@ module.exports.login = (req, res, next) => {
     if (!user) {
       throw new UnAuthorizedError('Ошибка авторизации');
     } else {
-      const token = jwt.sign({ _id: user.data.id },
+      const token = jwt.sign(
+        { _id: user.data.id },
         NODE_ENV === 'production' ? JWT_SECRET_KEY : 'dev-secret',
         // 'some-secret-key',
-        { expiresIn: '7d' });
+        { expiresIn: '7d' },
+      );
       res.status(201).send({ token });
     }
   }).catch(next);
 };
-

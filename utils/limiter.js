@@ -1,6 +1,7 @@
 // для выявления приложений на базе Express и активации целенаправленных атак
 // Не забыть!! В отдельный файл перенести Ревьюер посоветовал
-const rateLimit = require("express-rate-limit");
+const rateLimit = require('express-rate-limit');
+
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
   max: 10000, // limit each IP to 100 requests per windowMs

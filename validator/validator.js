@@ -1,6 +1,5 @@
-
 const { celebrate, Joi } = require('celebrate');
-const isUrl = require('validator/lib/isURL');
+// const isUrl = require('validator/lib/isURL');
 const validator = require('validator');
 
 const validateURL = (value) => {
@@ -15,7 +14,7 @@ const loginValidate = celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
-})
+});
 
 const updateUserValidate = celebrate({
   body: Joi.object().keys({
@@ -24,7 +23,7 @@ const updateUserValidate = celebrate({
   }),
 });
 
-//signup
+// signup
 const userValidate = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -56,10 +55,10 @@ const movieValidate = celebrate({
     nameRU: Joi.string().required().min(2).max(150),
     nameEN: Joi.string().required().min(2).max(150),
     country: Joi.string().required().min(2).max(150),
-    trailerLink:  Joi.string().required().custom(validateURL),
+    trailerLink: Joi.string().required().custom(validateURL),
     thumbnail: Joi.string().required().custom(validateURL),
     image: Joi.string().required().custom(validateURL),
-  })
+  }),
 });
 
 module.exports = {

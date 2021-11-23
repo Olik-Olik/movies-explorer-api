@@ -2,12 +2,12 @@ const Movie = require('../models/movies');
 const NotFoundError = require('../errors/NotFoundError');// 404 например, когда мы не нашли ресурс по переданному _id;
 const BadRequestError = require('../errors/BadRequestError');// 400 когда с запросом что-то не так;
 const ForbiddenError = require('../errors/ForbiddenError');// 403
-const ConflictError = require('../errors/ConflictError');// 409
+// const ConflictError = require('../errors/ConflictError');// 409
 
 module.exports.getMovies = (req, res, next) => {
   const owner = req.user._id;
- /* Movie.find({owner}).sort({ createdAt: -1 })
-    .populate('user')*/
+  /* Movie.find({owner}).sort({ createdAt: -1 })
+    .populate('user') */
   Movie.find({ owner })
     .then((movies) => res.send(movies))
     .catch((err) => res.status(500).send(` Server Mistake ${err.message}`))
@@ -17,13 +17,14 @@ module.exports.getMovies = (req, res, next) => {
 module.exports.createMovie = (req, res, next) => {
   const owner = req.user._id;
 
-  return Movie.create({ owner, ... req.body
+  return Movie.create({
+    owner, ...req.body,
   /*  owner: req.userId,
     name: newName,
-    link: newLink,*/
+    link: newLink, */
     // тут много всего  может ... использовать или все перечислить- да , именно так
   })
-    .then((movie) => res.status(201).send({movie}))
+    .then((movie) => res.status(201).send({ movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError('Невалидный id пользователя '));
@@ -51,6 +52,3 @@ module.exports.deleteMovie = (req, res, next) => {
       }
     }).catch(next);
 };
-
-
-

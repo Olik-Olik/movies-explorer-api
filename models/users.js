@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const isEmail = require('validator/lib/isEmail');
 
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
+const messageUnAuthorizedError = require('../utils/constants');
+const messageEmail = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,7 +21,7 @@ const userSchema = new mongoose.Schema({
     unique: true, // Так в базе не окажется несколько пользователей с одинаковой почтой
     validate: {
       validator: (v) => isEmail(v),
-      message: 'Измените формат почты - он неправильный',
+      message: messageEmail,
     },
   },
 
@@ -36,9 +38,9 @@ userSchema.statics.findUserByCredentials = function ({ userEmail, userPassword }
     .then((user) => {
       if (!user) {
         console.log('User not found');
-        throw new UnAuthorizedError('Неправильный email или пароль');
+        throw new UnAuthorizedError(messageUnAuthorizedError);
       }
- //если прошла авторизация, то выдаем фильмы по этому юзеру
+      // если прошла авторизация, то выдаем фильмы по этому юзеру
       const matched = bcrypt.compareSync(userPassword, user.password);
       if (matched) {
         console.log(`Usr: ${user.toString()}`);
@@ -50,7 +52,7 @@ userSchema.statics.findUserByCredentials = function ({ userEmail, userPassword }
           },
         };
       }
-      throw new UnAuthorizedError('Неправильный email или пароль');
+      throw new UnAuthorizedError(messageUnAuthorizedError);
     });
 };
 
