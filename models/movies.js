@@ -22,17 +22,18 @@ const movieSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-/*
   // — год выпуска фильма. Обязательное поле-строка.
   year: {
     type: String,
     required: true,
   },
+
   // — описание фильма. Обязательное поле-строка.
   description: {
     type: String,
     required: true,
   },
+
   // — ссылка на постер к фильму. Обязательное поле-строка. Запишите её URL-адресом.
   image: {
     type: String,
@@ -43,31 +44,34 @@ const movieSchema = new mongoose.Schema({
     message: messageValidateImage,
   },
   // — ссылка на трейлер фильма. Обязательное поле-строка. Запишите её URL-адресом.
-  trailer: {
-    type: String,
-    required: true,
-    validate: {
-      validator: (link) => isUrl(link),
+    trailerLink: {
+      type: String,
+      required: true,
+      validate: {
+        validator: (link) => isUrl(link),
+      },
+      message: messageValidateTrailer,
     },
-    message: messageValidateTrailer,
-  },
-  // — миниатюрное изображение постера к фильму. Обязательное поле-строка. Запишите её URL-адресом.
-  thumbnail: {
-    type: String,
-    required: true,
-    validate: {
-      validator: (link) => isUrl(link),
+
+    // — миниатюрное изображение постера к фильму. Обязательное поле-строка. Запишите её URL-адресом.
+    thumbnail: {
+      type: String,
+      required: true,
+      validate: {
+        validator: (link) => isUrl(link),
+      },
+      message: messageValidateThumbnail,
     },
-    message: messageValidateThumbnail,
-  },
-*/
+
+
+
   // — _id пользователя, который сохранил фильм. Обязательное поле.
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
   },
-/*
+
   // — название фильма на русском языке. Обязательное поле-строка.
   nameRU: {
     type: String,
@@ -80,6 +84,6 @@ const movieSchema = new mongoose.Schema({
     required: true,
     default: messageValidateNameEn,
   },
-*/
+
 });
 module.exports = mongoose.model('movies', movieSchema);

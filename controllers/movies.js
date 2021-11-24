@@ -4,6 +4,7 @@ const BadRequestError = require('../errors/BadRequestError');// 400 когда �
 const ForbiddenError = require('../errors/ForbiddenError');// 403
 const messageNotFoundError = require('../utils/constants');
 const messageBadRequestError= require('../utils/constants');
+const {Joi} = require("celebrate");
 // const ConflictError = require('../errors/ConflictError');// 409
 
 module.exports.getMovies = (req, res, next) => {
@@ -20,12 +21,20 @@ module.exports.createMovie = (req, res, next) => {
 //  const owner = req.userId;
 
   return Movie.create({
-  //  owner, ...req.body,
     owner: req.userId,
     country: req.body.country,
-    director: req.body.country,
-    duration: req.body.duration
-    // тут много всего  может ... использовать или все перечислить- да , именно так
+    director: req.body.director,
+    duration: req.body.duration,
+    year: req.body.year,
+    description: req.body.description,
+  //  movieId: req.body.movieId,
+    nameRU: req.body.nameRU ,
+    nameEN: req.body.nameEN ,
+    trailerLink: req.body.trailerLink ,
+    thumbnail: req.body.thumbnail,
+    image: req.body.image,
+
+
   })
     .then((movie) => res.status(201).send({ movie }))
     .catch((err) => {

@@ -14,7 +14,7 @@ const messageValidateNameEn = 'Название фильма на английс
 const urlMongo = 'mongodb://localhost:27017/moviesdb';
 const messageEmail = 'Измените формат почты - он неправильный';
 const messageConflictError = 'Такой email в базе есть';
-
+const messageValidateError = 'Неправильный формат ссылки';
 
 const httpCors = [
   'https://diplomback.nomoredomains.work',
@@ -42,4 +42,5 @@ module.exports = {
   messageEmail,
   httpCors,
   messageConflictError,
+  messageValidateError,
 };
