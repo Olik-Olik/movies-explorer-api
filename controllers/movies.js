@@ -17,13 +17,14 @@ module.exports.getMovies = (req, res, next) => {
 };
 
 module.exports.createMovie = (req, res, next) => {
-  const owner = req.user._id;
+//  const owner = req.userId;
 
   return Movie.create({
-    owner, ...req.body,
-  /*  owner: req.userId,
-    name: newName,
-    link: newLink, */
+  //  owner, ...req.body,
+    owner: req.userId,
+    country: req.body.country,
+    director: req.body.country,
+    duration: req.body.duration
     // тут много всего  может ... использовать или все перечислить- да , именно так
   })
     .then((movie) => res.status(201).send({ movie }))
@@ -38,7 +39,7 @@ module.exports.createMovie = (req, res, next) => {
 
 module.exports.deleteMovie = (req, res, next) => {
   const movieId = req.params.movieId;
-  const owner = req.user._id;
+  const owner = req.userId;
   Movie.findById({ _id: movieId })
     //  выдает ошибку, если ни один документ не соответствует id
     .orFail(() => {

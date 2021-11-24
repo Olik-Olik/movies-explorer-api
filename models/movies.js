@@ -22,6 +22,7 @@ const movieSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+/*
   // — год выпуска фильма. Обязательное поле-строка.
   year: {
     type: String,
@@ -59,18 +60,14 @@ const movieSchema = new mongoose.Schema({
     },
     message: messageValidateThumbnail,
   },
+*/
   // — _id пользователя, который сохранил фильм. Обязательное поле.
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
   },
-  // — id фильма, который содержится в ответе сервиса MoviesExplorer. Обязательное поле.
-
-  movieId: {
-    type: Number,
-    required: true,
-  },
+/*
   // — название фильма на русском языке. Обязательное поле-строка.
   nameRU: {
     type: String,
@@ -83,5 +80,6 @@ const movieSchema = new mongoose.Schema({
     required: true,
     default: messageValidateNameEn,
   },
+*/
 });
 module.exports = mongoose.model('movies', movieSchema);
