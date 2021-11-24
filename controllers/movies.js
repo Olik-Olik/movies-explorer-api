@@ -2,6 +2,8 @@ const Movie = require('../models/movies');
 const NotFoundError = require('../errors/NotFoundError');// 404 например, когда мы не нашли ресурс по переданному _id;
 const BadRequestError = require('../errors/BadRequestError');// 400 когда с запросом что-то не так;
 const ForbiddenError = require('../errors/ForbiddenError');// 403
+const messageNotFoundError = require('../utils/constants');
+const messageBadRequestError= require('../utils/constants');
 // const ConflictError = require('../errors/ConflictError');// 409
 
 module.exports.getMovies = (req, res, next) => {
@@ -27,7 +29,7 @@ module.exports.createMovie = (req, res, next) => {
     .then((movie) => res.status(201).send({ movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Невалидный id пользователя '));
+        next(new BadRequestError(messageBadRequestError ));
       }
       next(err);
       // res.status(500).send({ message: `Произошла ошибка:  ${err.message}` });
@@ -40,7 +42,7 @@ module.exports.deleteMovie = (req, res, next) => {
   Movie.findById({ _id: movieId })
     //  выдает ошибку, если ни один документ не соответствует id
     .orFail(() => {
-      throw new NotFoundError('Нет карточки с таким id в базе');
+      throw new NotFoundError(messageNotFoundError);
     })
     .then((movie) => {
       if (movie.owner.toString() === owner) {

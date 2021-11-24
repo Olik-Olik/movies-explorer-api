@@ -8,6 +8,8 @@ const ConflictError = require('../errors/ConflictError');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
 const { messageBadRequestError } = require('../utils/constants');
+const { messageConflictError } = require('../utils/constants');
+const { messageUnAuthorizedError} = require('../utils/constants');
 // 400 когда с запросом что-то не так;
 
 const { NODE_ENV, JWT_SECRET_KEY } = process.env;
@@ -15,12 +17,12 @@ const { NODE_ENV, JWT_SECRET_KEY } = process.env;
 // myUserId = id
 // get /users/me
 module.exports.getCurrentUser = (req, res, next) => {
-  const id = req.user._id;
+  const id = req.userId;
   //  console.log(id);
   return User.findById({ _id: id })
     /*  .orFail(() => {
       console.log('user not found');
-       throw new NotFoundError('Пользователь по данному id отсутствует  в базе');
+       throw new NotFoundError(messageBadRequestError);
      }) */
     .then((user) => {
       res.status(200).send(user);
@@ -46,16 +48,15 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((eerr) => {
       if (eerr.code === 11000) {
-        next(new ConflictError('Такой email в базе есть'));
+        next(new ConflictError( messageConflictError ));
       }
       if (eerr.name === 'ValidationError') {
-        next(new BadRequestError('Ошибка запроса Невалидный id пользователя '));
+        next(new BadRequestError( messageBadRequestError ));
       } else {
         next(eerr);
       }
     });
 };
-
 // patch  /users/me обновляет информацию о пользователе (email и имя)
 module.exports.updateUser = (req, res, next) => {
   req.userId = req.user._id;
@@ -84,7 +85,7 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials({ userEmail, userPassword }).then((user) => {
     if (!user) {
-      throw new UnAuthorizedError('Ошибка авторизации');
+      throw new UnAuthorizedError(messageUnAuthorizedError);
     } else {
       const token = jwt.sign(
         { _id: user.data.id },

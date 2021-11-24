@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Так в базе не окажется несколько пользователей с одинаковой почтой
+    unique: true,
     validate: {
       validator: (v) => isEmail(v),
       message: messageEmail,
@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function ({ userEmail, userPassword }) {
   return this.findOne({ email: userEmail }).select('+password')
     .then((user) => {

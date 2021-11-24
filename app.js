@@ -97,7 +97,8 @@ app.use(() => {
 // errorLogger нужно подключить после обработчиков роутов и до обработчиков ошибок
 app.use(errorLogger);
 
-//app.use(errorInternalServerError);
+app.use(errorInternalServerError);
+/*
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   console.log(err)
@@ -107,6 +108,7 @@ app.use((err, req, res, next) => {
   });
   next();
 });
+*/
 
 app.listen(PORT, () => {
   console.log(`Express is Working in console ${PORT}`);

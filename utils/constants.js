@@ -1,18 +1,19 @@
 // перенести все слова сюда
 // import BadRequestError from "../errors/BadRequestError";
 
-const messageNotFoundError = 'Нет такой страницЫ';
+const messageNotFoundError = 'Нет  кино с таким id в базе';
 const messageError = 'Сервер сейчас упадёт';
-const messageUnAuthorizedError = 'Необходима авторизация!Неправильный email или пароль';
-const messageBadRequestError = 'Пользователь  отсутствует';
+const messageUnAuthorizedError = 'Необходима авторизация! Неправильный email или пароль! Ошибка авторизации';
+const messageBadRequestError = 'Пользователь  отсутствует, нет такого id';
 const { adressMongo = 'mongodb://localhost:27017/mestodb' } = process.env;
 const messageValidateImage = 'Измените линк постера к фильму - он неправильный';
 const messageValidateTrailer = 'Измените линк - ссылку к трейлеру фильма - он неправильный';
 const messageValidateThumbnail = 'Измените линк-он неправильный';
 const messageValidateNameRU = 'Русское название фильма';
 const messageValidateNameEn = 'Название фильма на английском языке';
-const urlMongo = 'mongodb://localhost:27017/mestodb';
+const urlMongo = 'mongodb://localhost:27017/moviesdb';
 const messageEmail = 'Измените формат почты - он неправильный';
+const messageConflictError = 'Такой email в базе есть';
 
 
 const httpCors = [
@@ -40,5 +41,5 @@ module.exports = {
   urlMongo,
   messageEmail,
   httpCors,
-
+  messageConflictError,
 };
