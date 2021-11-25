@@ -56,7 +56,7 @@ module.exports.deleteMovie = (req, res, next) => {
           // ###
           .then(() => res.status(200).send({ messageDelete }));
       } else {
-       // console.log('Чужая карточка!');
+        // console.log('Чужая карточка!');
         throw new ForbiddenError(messageForbiddenError);
       }
     }).catch(next);

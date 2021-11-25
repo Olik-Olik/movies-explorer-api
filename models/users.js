@@ -6,6 +6,7 @@ const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const messageUnAuthorizedError = require('../utils/constants');
 const messageEmail = require('../utils/constants');
 
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -32,27 +33,25 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.statics.findUserByCredentials = function ({ userEmail, userPassword }) {
-  return this.findOne({ email: userEmail }).select('+password')
-    .then((user) => {
-      if (!user) {
-        console.log('User not found');
-        throw new UnAuthorizedError(messageUnAuthorizedError);
-      }
-      // если прошла авторизация, то выдаем фильмы по этому юзеру
-      const matched = bcrypt.compareSync(userPassword, user.password);
-      if (matched) {
-        console.log(`Usr: ${user.toString()}`);
-        return {
-          data: {
-            id: user._id,
-            name: user.name,
-            email: user.email,
-          },
-        };
-      }
+userSchema.statics.findUserByCredentials = ({ userEmail, userPassword }) => this.findOne({ email: userEmail }).select('+password')
+  .then((user) => {
+    if (!user) {
+      console.log('User not found');
       throw new UnAuthorizedError(messageUnAuthorizedError);
-    });
-};
+    }
+    // если прошла авторизация, то выдаем фильмы по этому юзеру
+    const matched = bcrypt.compareSync(userPassword, user.password);
+    if (matched) {
+      console.log(`Usr: ${user.toString()}`);
+      return {
+        data: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      };
+    }
+    throw new UnAuthorizedError(messageUnAuthorizedError);
+  });
 
 module.exports = mongoose.model('user', userSchema);
