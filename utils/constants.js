@@ -15,32 +15,33 @@ const urlMongo = 'mongodb://localhost:27017/moviesdb';
 const messageEmail = 'Измените формат почты - он неправильный';
 const messageConflictError = 'Такой email в базе есть';
 const messageValidateError = 'Неправильный формат ссылки';
-
+const messageForbiddenError = 'Чужие карточки не удаляют';
+const envPORT = 3627;
 const httpCors = [
   'https://diplomback.nomoredomains.work',
   'https://diplomfront.nomoredomains.work',
   'http://diplomback.nomoredomains.work',
   'http://diplomfront.nomoredomains.work',
   'http://localhost:3627',
-   //'http://localhost:3000',
+  // 'http://localhost:3000',
 ];
 
-// const  envPORT = 3624  ;
 module.exports = {
   messageNotFoundError,
   messageError,
   messageUnAuthorizedError,
   messageBadRequestError,
   adressMongo,
-  // envPORT,
   messageValidateImage,
   messageValidateTrailer,
   messageValidateThumbnail,
   messageValidateNameRU,
   messageValidateNameEn,
   urlMongo,
+  envPORT,
   messageEmail,
   httpCors,
   messageConflictError,
   messageValidateError,
+  messageForbiddenError,
 };

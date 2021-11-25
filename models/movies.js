@@ -44,26 +44,24 @@ const movieSchema = new mongoose.Schema({
     message: messageValidateImage,
   },
   // — ссылка на трейлер фильма. Обязательное поле-строка. Запишите её URL-адресом.
-    trailerLink: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (link) => isUrl(link),
-      },
-      message: messageValidateTrailer,
+  trailerLink: {
+    type: String,
+    required: true,
+    validate: {
+      validator: (link) => isUrl(link),
     },
+    message: messageValidateTrailer,
+  },
 
-    // — миниатюрное изображение постера к фильму. Обязательное поле-строка. Запишите её URL-адресом.
-    thumbnail: {
-      type: String,
-      required: true,
-      validate: {
-        validator: (link) => isUrl(link),
-      },
-      message: messageValidateThumbnail,
+  // — миниатюрное изображение постера к фильму. Обязательное поле-строка. Запишите её URL-адресом.
+  thumbnail: {
+    type: String,
+    required: true,
+    validate: {
+      validator: (link) => isUrl(link),
     },
-
-
+    message: messageValidateThumbnail,
+  },
 
   // — _id пользователя, который сохранил фильм. Обязательное поле.
   owner: {

@@ -52,13 +52,11 @@ const movieValidate = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required().min(2).max(4),
     description: Joi.string().required().min(2).max(3000),
-   // movieId: Joi.string().required(),
     nameRU: Joi.string().required().min(2).max(150),
     nameEN: Joi.string().required().min(2).max(150),
     trailerLink: Joi.string().required().custom(validateURL),
     thumbnail: Joi.string().required().custom(validateURL),
     image: Joi.string().required().custom(validateURL),
-
   }),
 });
 

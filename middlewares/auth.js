@@ -26,10 +26,3 @@ module.exports = (req, res, next) => {
     next(err);
   }
 };
-// const SECRET_KEY = 'cAtwa1kkEy'
-// const unsignedToken = base64urlEncode(header) + '.' + base64urlEncode(payload)
-// const signature = HMAC-SHA256(unsignedToken, SECRET_KEY)
-
-// const token = encodeBase64Url(header) + '.'
-// + encodeBase64Url(payload) + '.'
-// + encodeBase64Url(signature)

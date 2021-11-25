@@ -1,7 +1,7 @@
 {
   "name": "backend_diplom",
   "version": "0.1.0",
-  "description": "Проект express-mesto бэкенд",
+  "description": "Диплом бэкенд",
   "author": "Ольга Санина",
   "main": "app.js",
   "dependencies": {

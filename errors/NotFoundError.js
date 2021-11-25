@@ -1,5 +1,4 @@
 // errors/NotFoundError.js 404
-
 class NotFoundError extends Error {
   constructor(message) {
     super(message);

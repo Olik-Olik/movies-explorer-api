@@ -1,5 +1,4 @@
 // 409 ConflictError
-
 class ConflictError extends Error {
   constructor(message) {
     super(message);

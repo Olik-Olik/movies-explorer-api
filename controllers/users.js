@@ -9,7 +9,7 @@ const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
 const { messageBadRequestError } = require('../utils/constants');
 const { messageConflictError } = require('../utils/constants');
-const { messageUnAuthorizedError} = require('../utils/constants');
+const { messageUnAuthorizedError } = require('../utils/constants');
 // 400 когда с запросом что-то не так;
 
 const { NODE_ENV, JWT_SECRET_KEY } = process.env;
@@ -31,7 +31,7 @@ module.exports.getCurrentUser = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  console.log(req.body.email)
+  console.log(req.body.email);
   // eslint-disable-next-line no-unused-expressions
   bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
@@ -48,10 +48,10 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((eerr) => {
       if (eerr.code === 11000) {
-        next(new ConflictError( messageConflictError ));
+        next(new ConflictError(messageConflictError));
       }
       if (eerr.name === 'ValidationError') {
-        next(new BadRequestError( messageBadRequestError ));
+        next(new BadRequestError(messageBadRequestError));
       } else {
         next(eerr);
       }
