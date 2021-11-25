@@ -5,6 +5,7 @@ const ForbiddenError = require('../errors/ForbiddenError');// 403
 const messageNotFoundError = require('../utils/constants');
 const messageBadRequestError = require('../utils/constants');
 const messageForbiddenError = require('../utils/constants');
+const messageDelete = require('../utils/constants');
 // const ConflictError = require('../errors/ConflictError');// 409
 
 module.exports.getMovies = (req, res, next) => {
@@ -53,9 +54,9 @@ module.exports.deleteMovie = (req, res, next) => {
       if (movie.owner.toString() === owner) {
         Movie.deleteOne({ _id: movieId })
           // ###
-          .then(() => res.status(200).send({ message: 'Карточка удалена.' }));
+          .then(() => res.status(200).send({ messageDelete }));
       } else {
-        console.log('Чужая карточка!');
+       // console.log('Чужая карточка!');
         throw new ForbiddenError(messageForbiddenError);
       }
     }).catch(next);

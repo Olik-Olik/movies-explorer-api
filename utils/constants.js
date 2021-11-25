@@ -16,6 +16,7 @@ const messageEmail = 'Измените формат почты - он непра
 const messageConflictError = 'Такой email в базе есть';
 const messageValidateError = 'Неправильный формат ссылки';
 const messageForbiddenError = 'Чужие карточки не удаляют';
+const messageDelete = 'Карточка удалена';
 const envPORT = 3627;
 const httpCors = [
   'https://diplomback.nomoredomains.work',
@@ -44,4 +45,5 @@ module.exports = {
   messageConflictError,
   messageValidateError,
   messageForbiddenError,
+  messageDelete,
 };
