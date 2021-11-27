@@ -1,7 +1,7 @@
 # movies-explorer-api
 Домен:
-##  https://diplomback.nomoredomains.work
-##  http://diplomback.nomoredomains.work
+##  https://diplomback.nomoredomains.work/api/
+
 
 # Репозиторий для дипломного проекта `Кинопоиск`, включающий на 2-ом этапе бэкенд backend/  — часть приложения со следующими возможностями:
 
