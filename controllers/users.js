@@ -2,18 +2,13 @@
 const bcrypt = require('bcryptjs');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const jwt = require('jsonwebtoken');
-const { NotBeforeError } = require('jsonwebtoken');
+const constants = require('constants');
 const User = require('../models/users');
-// const NotFoundError = require('../errors/NotFoundError');// 404
 const ConflictError = require('../errors/ConflictError');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
-const { messageBadRequestError } = require('../utils/constants');
-const { messageConflictError } = require('../utils/constants');
 const { messageUnAuthorizedError } = require('../utils/constants');
 // 400 когда с запросом что-то не так;
-
-const { NODE_ENV, JWT_SECRET_KEY } = process.env;
 
 // myUserId = id
 // get /users/me
@@ -118,8 +113,7 @@ module.exports.login = (req, res, next) => {
     } else {
       const token = jwt.sign(
         { _id: user.data.id },
-        NODE_ENV === 'production' ? JWT_SECRET_KEY : 'dev-secret',
-        // 'some-secret-key',
+        constants.JWT_SECRET_KEY,
         { expiresIn: '7d' },
       );
       res.status(201).send({ token });

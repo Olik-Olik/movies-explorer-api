@@ -11,7 +11,6 @@ const moviesRoutes = require('./movies');
 
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/NotFoundError');
-const express = require("express");
 
 router.post('/signin', loginValidate, login);
 router.post('/signup', userValidate, createUser);

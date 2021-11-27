@@ -15,7 +15,7 @@ const constants = require('./utils/constants');
 
 require('dotenv').config();
 
-const { PORT = constants.envPORT, NODE_ENV, urlMongo } = process.env;
+const { PORT = constants.envPORT } = process.env;
 const httpCors = require('./utils/constants');
 
 const CommonServerError = require('./errors/CommonServerError');

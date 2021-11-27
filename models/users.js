@@ -34,8 +34,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.statics.findUserByCredentials = function fUbyC({ userEmail, userPassword }) {
   return this.findOne({ email: userEmail }).select('+password')
-  /// /////7777
-    /* userSchema.statics.findUserByCredentials = ({ userEmail, userPassword }) => this.findOne({ email: userEmail }).select('+password') */
     .then((user) => {
       if (!user) {
         console.log('User not found');
