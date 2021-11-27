@@ -1,6 +1,3 @@
-// перенести все слова сюда
-// import BadRequestError from "../errors/BadRequestError";
-
 const messageNotFoundError = 'Нет  кино с таким id в базе';
 const messageError = 'Сервер сейчас упадёт';
 const messageUnAuthorizedError = 'Необходима авторизация! Неправильный email или пароль! Ошибка авторизации';

@@ -56,7 +56,7 @@ const movieValidate = celebrate({
     trailer: Joi.string().required().custom(validateURL),
     thumbnail: Joi.string().required().custom(validateURL),
     image: Joi.string().required().custom(validateURL),
-    movieId:Joi.number().required(),
+    movieId: Joi.number().required(),
   }),
 });
 

@@ -6,4 +6,5 @@ const CommonServerError = ((err, req, res, next) => {
   });
   next();
 });
+
 module.exports = CommonServerError;

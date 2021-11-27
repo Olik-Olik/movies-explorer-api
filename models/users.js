@@ -6,7 +6,6 @@ const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const messageUnAuthorizedError = require('../utils/constants');
 const messageEmail = require('../utils/constants');
 
-
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -33,10 +32,10 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.statics.findUserByCredentials = function ({ userEmail, userPassword }) {
-  return this.findOne({email: userEmail}).select('+password')
-  ////////7777
-    /*userSchema.statics.findUserByCredentials = ({ userEmail, userPassword }) => this.findOne({ email: userEmail }).select('+password')*/
+userSchema.statics.findUserByCredentials = function fUbyC({ userEmail, userPassword }) {
+  return this.findOne({ email: userEmail }).select('+password')
+  /// /////7777
+    /* userSchema.statics.findUserByCredentials = ({ userEmail, userPassword }) => this.findOne({ email: userEmail }).select('+password') */
     .then((user) => {
       if (!user) {
         console.log('User not found');
@@ -56,5 +55,5 @@ userSchema.statics.findUserByCredentials = function ({ userEmail, userPassword }
       }
       throw new UnAuthorizedError(messageUnAuthorizedError);
     });
-}
+};
 module.exports = mongoose.model('user', userSchema);

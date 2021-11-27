@@ -13,11 +13,13 @@ module.exports.getMovies = (req, res, next) => {
   /* Movie.find({owner}).sort({ createdAt: -1 })
     .populate('user') */
   Movie.find({ owner })
-    .then((movies) => res.send(movies))
-    .catch((err) => res.status(500).send(` Server Mistake ${err.message}`))
+    .then((movies) => res.status(200).send(movies))
+    .catch((err) => {
+      throw new NotFoundError(err.message);
+    })
     .catch(next);
 };
-////owner: req.userId
+/// /owner: req.userId
 module.exports.createMovie = (req, res, next) => {
   Movie.create({
     owner: req.userId,
@@ -34,7 +36,7 @@ module.exports.createMovie = (req, res, next) => {
     image: req.body.image,
 
   })
-    .then((movie) => res.status(201).send({movie}))
+    .then((movie) => res.status(201).send({ movie }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(messageBadRequestError));
@@ -48,9 +50,7 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   const owner = req.userId;
-  ///////777
-
-  Movie.findById( movieId )
+  Movie.findById(movieId)
     //  выдает ошибку, если ни один документ не соответствует id
     .orFail(() => {
       throw new NotFoundError('Такого фильма нет');
@@ -58,9 +58,8 @@ module.exports.deleteMovie = (req, res, next) => {
 
     .then((movie) => {
       if (movie.owner.toString() === owner) {
-       return Movie.findByIdAndDelete( movieId )
-          ///// ###
-          .then((dat) => res.status(200).send(dat)
+        return Movie.findByIdAndDelete(movieId)
+          .then(() => res.status(200).send({message: 'Удален фильм'})
             .catch((err) => {
               if (err.name === 'ValidationError') {
                 next(new BadRequestError('Нет такого id'));
@@ -70,9 +69,8 @@ module.exports.deleteMovie = (req, res, next) => {
             })
             .catch(next));
       }
-      else {
-        // console.log('Чужой фильм');
-        throw new ForbiddenError(/*messageForbiddenError*/'Чужой фильм нельзя удалить');
-      }
+
+      // console.log('Чужой фильм');
+      throw new ForbiddenError(/* messageForbiddenError */'Чужой фильм нельзя удалить');
     }).catch(next);
 };

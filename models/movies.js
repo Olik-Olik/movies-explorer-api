@@ -46,7 +46,7 @@ const movieSchema = new mongoose.Schema({
   // — ссылка на трейлер фильма. Обязательное поле-строка. Запишите её URL-адресом.
   trailerLink: {
     type: String,
-    required: true,
+    required: false,
     validate: {
       validator: (link) => isUrl(link),
     },
@@ -82,9 +82,9 @@ const movieSchema = new mongoose.Schema({
     required: true,
     default: messageValidateNameEn,
   },
-   movieId: {
+  movieId: {
     type: Number,
-     required:true,
-   }
+    required: true,
+  },
 });
 module.exports = mongoose.model('movies', movieSchema);

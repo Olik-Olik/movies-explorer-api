@@ -14,11 +14,11 @@ const { errorLogger } = require('./middlewares/logger');
 const constants = require('./utils/constants');
 
 require('dotenv').config();
+
 const { PORT = constants.envPORT, NODE_ENV, urlMongo } = process.env;
 const httpCors = require('./utils/constants');
 
 const CommonServerError = require('./errors/CommonServerError');
-
 
 const app = express();
 app.use(helmet());
@@ -26,7 +26,6 @@ app.use(helmet());
 app.disable('x-powered-by'); // отключим заголовок X-Powered-By
 
 const limiter = require('./utils/limiter');
-
 
 const options = {
   origin: httpCors,
@@ -38,7 +37,7 @@ const options = {
 
 app.use(cors(options));
 
-//app.use(cors({origin: NODE_ENV === 'production' ? httpCors : credentials: true }));
+// app.use(cors({origin: NODE_ENV === 'production' ? httpCors : credentials: true }));
 
 mongoose.connect(
   constants.urlMongo,
@@ -66,11 +65,8 @@ app.use(routes);
 
 app.use(errorLogger);
 
-app.use(errors());//подключена мидлвара , обрабатывающая celebrate
-
 app.use(CommonServerError);
 
 app.listen(PORT, () => {
   console.log(`Наш Волшебный Express is Working in console ${PORT}`);
 });
-
