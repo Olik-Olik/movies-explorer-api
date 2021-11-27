@@ -61,7 +61,7 @@ app.get('/crash-test', () => {
 
 app.use(errors()); // обработчик ошибок celebrate
 
-app.use(routes);
+app.use('/api/', routes);
 
 app.use(errorLogger);
 
