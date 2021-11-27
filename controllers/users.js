@@ -7,9 +7,11 @@ const User = require('../models/users');
 const ConflictError = require('../errors/ConflictError');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
+const InternalServerError = require('../errors/InternalServerError');
 const { messageBadRequestError } = require('../utils/constants');
 const { messageConflictError } = require('../utils/constants');
 const { messageUnAuthorizedError } = require('../utils/constants');
+const {NotBeforeError} = require("jsonwebtoken");
 // 400 когда с запросом что-то не так;
 
 const { NODE_ENV, JWT_SECRET_KEY } = process.env;
@@ -32,7 +34,22 @@ module.exports.getCurrentUser = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   console.log(req.body.email);
-  // eslint-disable-next-line no-unused-expressions
+///////7777
+    const  {name,
+            email,
+            password} =req.body;
+/*  if ( !name ){
+    next(new NotBeforeError ('В запросе отсутствует имя пользователя'))
+  }
+  if (!email ){
+    next(new NotBeforeError('В запросе отсутствует почта пользователя'))
+  }
+  if ( !password){
+    next(new NotBeforeError('В запросе отсутствует пароль пользователя'))
+  }*/
+  if ( !name || !password || !email  ){
+    next(new NotBeforeError ('В запросе отсутствует верные почта или пароль пользователя'))
+  }
   bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
       name: req.body.name,
@@ -48,14 +65,18 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((eerr) => {
       if (eerr.code === 11000) {
-        next(new ConflictError(messageConflictError));
+        next(new ConflictError('Пользователь с такой почтой уже есть'));
       }
       if (eerr.name === 'ValidationError') {
-        next(new BadRequestError(messageBadRequestError));
+        ///////7777
+    /*    next(new BadRequestError(messageBadRequestError));*/
+            next(new BadRequestError('Данные пароля и/или почты неверные, измените'));
       } else {
         next(eerr);
       }
-    });
+    })
+  ///////7777
+  .catch(next);
 };
 // patch  /users/me обновляет информацию о пользователе (email и имя)
 module.exports.updateUser = (req, res, next) => {
@@ -67,15 +88,30 @@ module.exports.updateUser = (req, res, next) => {
     { _id: req.userId },
     {
       name: newName,
-      about: newEmail,
+      email: newEmail,
     },
 
     { new: true, runValidators: true },
   )
     .orFail(() => {
-      throw new BadRequestError(messageBadRequestError);
+    /*  throw new BadRequestError(messageBadRequestError);*/
+      throw new BadRequestError('нет пользователя  с таким id');
     })
     .then((user) => res.status(200).send(user))
+    ///////7777
+    .catch((eerr) => {
+      if (eerr.code === 11000) {
+        next(new ConflictError('пользователь с таким id уже есть'));
+      }
+      if (eerr.name === 'ValidationError') {
+        ///////7777
+        /*    next(new BadRequestError(messageBadRequestError));*/
+        next(new BadRequestError('кривые данные'));
+      } else {
+        next(eerr);
+      }
+    })
+    ///////7777
     .catch(next);
 };
 

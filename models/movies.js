@@ -82,6 +82,9 @@ const movieSchema = new mongoose.Schema({
     required: true,
     default: messageValidateNameEn,
   },
-
+   movieId: {
+    type: Number,
+     required:true,
+   }
 });
 module.exports = mongoose.model('movies', movieSchema);

@@ -1,35 +1,32 @@
-require('dotenv').config();
-
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');// не нужен
+const bodyParser = require('body-parser');
+
 const { errors } = require('celebrate');
-const router = require('express').Router(); // корневой роутер
+
+const routes = require('./routes/main');
+
 const { requestLogger } = require('./middlewares/logger');
 const { errorLogger } = require('./middlewares/logger');
-const routes = require('./routes/users');
-const moviesRoutes = require('./routes/movies');
-require('./middlewares/auth');
-const NotFoundError = require('./errors/NotFoundError');
-const constants = require('./utils/constants');
-const { createUser, login } = require('./controllers/users');
 
-const { PORT = constants.envPORT } = process.env;
+const constants = require('./utils/constants');
+
+require('dotenv').config();
+const { PORT = constants.envPORT, NODE_ENV, urlMongo } = process.env;
+const httpCors = require('./utils/constants');
+
 const CommonServerError = require('./errors/CommonServerError');
 
-const httpCors = require('./utils/constants');
 
 const app = express();
 app.use(helmet());
 
-app.disable('x-powered-by'); // отключите заголовок X-Powered-By
-// Если вы используете helmet.js, это будет сделано автоматически
-// const urlMongo = require('./utils/constants');
+app.disable('x-powered-by'); // отключим заголовок X-Powered-By
+
 const limiter = require('./utils/limiter');
-const auth = require('./middlewares/auth');
-const { loginValidate, userValidate } = require('./validator/validator');
+
 
 const options = {
   origin: httpCors,
@@ -39,9 +36,9 @@ const options = {
   credentials: true,
 };
 
-const { messageError, messageNotFoundError } = require('./utils/constants');
-
 app.use(cors(options));
+
+//app.use(cors({origin: NODE_ENV === 'production' ? httpCors : credentials: true }));
 
 mongoose.connect(
   constants.urlMongo,
@@ -53,41 +50,27 @@ mongoose.set('useCreateIndex', true);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Логгер запросов до  роутов
-
 app.use(requestLogger);
+
 app.use(limiter);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error(messageError);
+    throw new Error(' Сервер упал ');
   }, 0);
 });
 
 app.use(errors()); // обработчик ошибок celebrate
-// # проверяет переданные в теле почту и пароль
-// # и возвращает JWT
-app.post('/signin', loginValidate, login);
-// # создаёт пользователя с переданными в теле
-// # email, password и name
-app.post('/signup', userValidate, createUser);
 
-// Защитите роуты авторизацией: если клиент не прислал JWT,
-// доступ к роутам ему должен быть закрыт
-app.use(auth);
 app.use(routes);
-app.use(moviesRoutes);
 
-app.use(() => {
-  throw new NotFoundError(messageNotFoundError);
-});
-// errorLogger нужно подключить после обработчиков роутов и до обработчиков ошибок
 app.use(errorLogger);
+
+app.use(errors());//подключена мидлвара , обрабатывающая celebrate
 
 app.use(CommonServerError);
 
 app.listen(PORT, () => {
-  console.log(`Express is Working in console ${PORT}`);
+  console.log(`Наш Волшебный Express is Working in console ${PORT}`);
 });
 
-module.exports = { router };
