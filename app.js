@@ -1,3 +1,4 @@
+require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
@@ -6,18 +7,15 @@ const bodyParser = require('body-parser');
 
 const { errors } = require('celebrate');
 
-const routes = require('./routes/main');
+const { routes } = require('./routes/main');
+const { defaultRoute404 } = require('./routes/main');
 
 const { requestLogger } = require('./middlewares/logger');
 const { errorLogger } = require('./middlewares/logger');
 
-const constants = require('./utils/constants');
+const { httpCors, APP_PORT, MONGO_URI } = require('./utils/constants');
 
-require('dotenv').config();
-
-const { PORT = constants.envPORT } = process.env;
-const httpCors = require('./utils/constants');
-
+const NotFoundError = require('./errors/NotFoundError');
 const CommonServerError = require('./errors/CommonServerError');
 
 const app = express();
@@ -26,6 +24,7 @@ app.use(helmet());
 app.disable('x-powered-by'); // отключим заголовок X-Powered-By
 
 const limiter = require('./utils/limiter');
+//const {defaultRoute} = require("./routes/main");
 
 const options = {
   origin: httpCors,
@@ -40,7 +39,7 @@ app.use(cors(options));
 // app.use(cors({origin: NODE_ENV === 'production' ? httpCors : credentials: true }));
 
 mongoose.connect(
-  constants.urlMongo,
+  MONGO_URI,
   { useNewUrlParser: true },
 ).then(() => console.log('connect mongo'));
 
@@ -63,10 +62,12 @@ app.use(errors()); // обработчик ошибок celebrate
 
 app.use('/api/', routes);
 
+app.use('/*', defaultRoute404);
+
 app.use(errorLogger);
 
 app.use(CommonServerError);
 
-app.listen(PORT, () => {
-  console.log(`Наш Волшебный Express is Working in console ${PORT}`);
+app.listen(APP_PORT, () => {
+  console.log(`Наш Волшебный Express is Working in console ${APP_PORT}`);
 });

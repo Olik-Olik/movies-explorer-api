@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
-const constants = require('constants');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
-const { messageUnAuthorizedError } = require('../utils/constants');
+const { JWT_SECRET_KEY, messageUnAuthorizedError } = require('../utils/constants');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
@@ -13,7 +12,7 @@ module.exports = (req, res, next) => {
   const token = authorization.replace('Bearer ', '');
   // в тело payload пишем
   try {
-    jwt.verify(token, constants.JWT_SECRET_KEY);
+    jwt.verify(token, JWT_SECRET_KEY);
     req.userId = jwt.decode(token)._id;
     next();
   } catch (e) {

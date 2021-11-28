@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const routes = require('express').Router();
 // signin
 const { loginValidate } = require('../validator/validator');
 // signup
@@ -6,20 +6,24 @@ const { userValidate } = require('../validator/validator');
 
 const { login, createUser } = require('../controllers/users');
 
-const routes = require('./users');
+const userRoutes = require('./users');
 const moviesRoutes = require('./movies');
 
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/NotFoundError');
 
-router.post('/signin', loginValidate, login);
-router.post('/signup', userValidate, createUser);
+routes.post('/signin', loginValidate, login);
+routes.post('/signup', userValidate, createUser);
 
-router.use(auth, routes);
-router.use(auth, moviesRoutes);
+routes.use(auth, userRoutes);
+routes.use(auth, moviesRoutes);
 
-router.use('/*', () => {
+routes.use('/*', () => {
   throw new NotFoundError('Такой страницы нет');
 });
 
-module.exports = router;
+const defaultRoute404 = function(){
+  throw new NotFoundError('Такой страницы нет');
+}
+
+module.exports = { routes, defaultRoute404 };

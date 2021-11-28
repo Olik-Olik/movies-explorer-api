@@ -2,24 +2,15 @@
 const bcrypt = require('bcryptjs');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const jwt = require('jsonwebtoken');
-const constants = require('constants');
 const User = require('../models/users');
 const ConflictError = require('../errors/ConflictError');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
-const { messageUnAuthorizedError } = require('../utils/constants');
-// 400 когда с запросом что-то не так;
+const { JWT_SECRET_KEY, messageUnAuthorizedError } = require('../utils/constants');
 
-// myUserId = id
-// get /users/me
 module.exports.getCurrentUser = (req, res, next) => {
   const id = req.userId;
-  //  console.log(id);
   return User.findById({ _id: id })
-    /*  .orFail(() => {
-      console.log('user not found');
-       throw new NotFoundError(messageBadRequestError);
-     }) */
     .then((user) => {
       res.status(200).send(user);
     })
@@ -56,14 +47,11 @@ module.exports.createUser = (req, res, next) => {
         throw new ConflictError('Пользователь с такой почтой уже есть');
       }
       if (eerr.name === 'ValidationError') {
-        /// ////7777
-        /*    next(new BadRequestError(messageBadRequestError)); */
         throw new BadRequestError('Данные пароля и/или почты неверные, измените');
       } else {
         next(eerr);
       }
     })
-  /// ////7777
     .catch(next);
 };
 // patch  /users/me обновляет информацию о пользователе (email и имя)
@@ -78,28 +66,23 @@ module.exports.updateUser = (req, res, next) => {
       name: newName,
       email: newEmail,
     },
-
     { new: true, runValidators: true },
   )
     .orFail(() => {
-    /*  throw new BadRequestError(messageBadRequestError); */
       throw new BadRequestError('нет пользователя  с таким id');
     })
     .then((user) => res.status(200).send(user))
-    /// ////7777
     .catch((eerr) => {
       if (eerr.code === 11000) {
-        next(new ConflictError('пользователь с таким id уже есть'));
+        next(new ConflictError('пользователь с таким email уже есть'));
       }
       if (eerr.name === 'ValidationError') {
-        /// ////7777
-        /*    next(new BadRequestError(messageBadRequestError)); */
+
         next(new BadRequestError('кривые данные'));
       } else {
         next(eerr);
       }
     })
-    /// ////7777
     .catch(next);
 };
 
@@ -113,7 +96,8 @@ module.exports.login = (req, res, next) => {
     } else {
       const token = jwt.sign(
         { _id: user.data.id },
-        constants.JWT_SECRET_KEY,
+        JWT_SECRET_KEY,
+     /*   node_const,*/
         { expiresIn: '7d' },
       );
       res.status(201).send({ token });

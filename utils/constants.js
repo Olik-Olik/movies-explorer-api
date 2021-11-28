@@ -12,7 +12,6 @@ const messageConflictError = 'Такой email в базе есть';
 const messageValidateError = 'Неправильный формат ссылки';
 const messageForbiddenError = 'Чужие карточки не удаляют';
 const messageDelete = 'Карточка удалена';
-const envPORT = 3627;
 const httpCors = [
   'https://diplomback.nomoredomains.work',
   'https://diplomfront.nomoredomains.work',
@@ -21,10 +20,11 @@ const httpCors = [
   'http://localhost:3627',
   // 'http://localhost:3000',
 ];
-const { NODE_ENV } = process.env;
 
+const { NODE_ENV } = process.env;
 const JWT_SECRET_KEY = NODE_ENV === 'production' ? process.env.JWT_SECRET_KEY : 'dev-secret';
-const urlMongo = NODE_ENV === 'production' ? process.env.MONGO_URI : 'mongodb://localhost:27017/moviesdb';
+const MONGO_URI = NODE_ENV === 'production' ? process.env.MONGO_URI : 'mongodb://localhost:27017/moviesdb';
+const APP_PORT = NODE_ENV === 'production' ? process.env.PORT : 3627;
 
 module.exports = {
   messageNotFoundError,
@@ -36,8 +36,8 @@ module.exports = {
   messageValidateThumbnail,
   messageValidateNameRU,
   messageValidateNameEn,
-  urlMongo,
-  envPORT,
+  MONGO_URI,
+  APP_PORT,
   JWT_SECRET_KEY,
   messageEmail,
   httpCors,
@@ -45,4 +45,5 @@ module.exports = {
   messageValidateError,
   messageForbiddenError,
   messageDelete,
+ // node_const,
 };

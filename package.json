@@ -26,6 +26,7 @@
     "dev": "nodemon app.js",
     "lint": "eslint . --fix",
     "prod": "cross-env , NODE_ENV=production webpack"
+
   },
   "devDependencies": {
     "eslint": "^8.3.0",
