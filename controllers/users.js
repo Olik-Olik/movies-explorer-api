@@ -77,7 +77,6 @@ module.exports.updateUser = (req, res, next) => {
         next(new ConflictError('пользователь с таким email уже есть'));
       }
       if (eerr.name === 'ValidationError') {
-
         next(new BadRequestError('кривые данные'));
       } else {
         next(eerr);
@@ -97,7 +96,6 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign(
         { _id: user.data.id },
         JWT_SECRET_KEY,
-     /*   node_const,*/
         { expiresIn: '7d' },
       );
       res.status(201).send({ token });

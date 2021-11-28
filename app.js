@@ -23,7 +23,6 @@ app.use(helmet());
 app.disable('x-powered-by'); // отключим заголовок X-Powered-By
 
 const limiter = require('./utils/limiter');
-//const {defaultRoute} = require("./routes/main");
 
 const { messageErrorServer } = require('./utils/constants');
 

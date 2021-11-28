@@ -21,11 +21,11 @@ routes.use(auth, userRoutes);
 routes.use(auth, moviesRoutes);
 
 routes.use('/*', () => {
-  throw new NotFoundError(messageNotFoundErrorPage) ;
+  throw new NotFoundError(messageNotFoundErrorPage);
 });
 
-const defaultRoute404 = function(){
+const defaultRoute404 = () => {
   throw new NotFoundError(messageNotFoundErrorPage);
-}
+};
 
 module.exports = { routes, defaultRoute404 };

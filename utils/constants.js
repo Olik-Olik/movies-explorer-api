@@ -16,7 +16,7 @@ const messageDelete = 'Карточка удалена';
 const messageNotFoundErrorFilm = 'Такого фильма нет';
 const messageRemoveFilm = 'Удален фильм';
 const messageErrorServer = ' Сервер упал ';
-const messageNotFoundErrorPage ='Такой страницы нет';
+const messageNotFoundErrorPage = 'Такой страницы нет';
 const httpCors = [
   'https://diplomback.nomoredomains.work',
   'https://diplomfront.nomoredomains.work',
@@ -54,5 +54,5 @@ module.exports = {
   messageNotFoundErrorFilm,
   messageRemoveFilm,
   messageErrorServer,
-  messageNotFoundErrorPage
+  messageNotFoundErrorPage,
 };

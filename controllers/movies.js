@@ -5,6 +5,7 @@ const ForbiddenError = require('../errors/ForbiddenError');// 403
 const { messageBadRequestError } = require('../utils/constants');
 const { messageNotFoundErrorFilm } = require('../utils/constants');
 const { messageRemoveFilm } = require('../utils/constants');
+const { messageForbiddenErrorDel } = require('../utils/constants');
 
 module.exports.getMovies = (req, res, next) => {
   const owner = req.userId;
