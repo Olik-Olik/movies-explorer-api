@@ -6,7 +6,12 @@ const User = require('../models/users');
 const ConflictError = require('../errors/ConflictError');
 const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const BadRequestError = require('../errors/BadRequestError');
-const { JWT_SECRET_KEY, messageUnAuthorizedError } = require('../utils/constants');
+const {
+  JWT_SECRET_KEY, messageUnAuthorizedError, messageConflictErrorUser,
+  messageBadRequestErrorUser, messageBadRequestErrorData,
+  messageBadRequestErrorUserId, messageBadRequestErrorBadData,
+  messageConflictErrorUserEmail,
+} = require('../utils/constants');
 
 module.exports.getCurrentUser = (req, res, next) => {
   const id = req.userId;
@@ -27,7 +32,7 @@ module.exports.createUser = (req, res, next) => {
   } = req.body;
 
   if (!name || !password || !email) {
-    throw new BadRequestError('В запросе отсутствует верные почта или пароль пользователя');
+    throw new BadRequestError(messageBadRequestErrorUser);
   }
   bcrypt.hash(req.body.password, 10)
     .then((hash) => User.create({
@@ -44,10 +49,10 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((eerr) => {
       if (eerr.code === 11000) {
-        throw new ConflictError('Пользователь с такой почтой уже есть');
+        throw new ConflictError(messageConflictErrorUser);
       }
       if (eerr.name === 'ValidationError') {
-        throw new BadRequestError('Данные пароля и/или почты неверные, измените');
+        throw new BadRequestError(messageBadRequestErrorData);
       } else {
         next(eerr);
       }
@@ -69,15 +74,15 @@ module.exports.updateUser = (req, res, next) => {
     { new: true, runValidators: true },
   )
     .orFail(() => {
-      throw new BadRequestError('нет пользователя  с таким id');
+      throw new BadRequestError(messageBadRequestErrorUserId);
     })
     .then((user) => res.status(200).send(user))
     .catch((eerr) => {
       if (eerr.code === 11000) {
-        next(new ConflictError('пользователь с таким email уже есть'));
+        next(new ConflictError(messageConflictErrorUserEmail));
       }
       if (eerr.name === 'ValidationError') {
-        next(new BadRequestError('кривые данные'));
+        next(new BadRequestError(messageBadRequestErrorBadData));
       } else {
         next(eerr);
       }

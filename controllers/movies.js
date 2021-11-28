@@ -5,7 +5,7 @@ const ForbiddenError = require('../errors/ForbiddenError');// 403
 const { messageBadRequestError } = require('../utils/constants');
 const { messageNotFoundErrorFilm } = require('../utils/constants');
 const { messageRemoveFilm } = require('../utils/constants');
-const { messageForbiddenErrorDel } = require('../utils/constants');
+const { messageForbiddenErrorDel, messageBadRequestErrorFilm } = require('../utils/constants');
 
 module.exports.getMovies = (req, res, next) => {
   const owner = req.userId;
@@ -57,7 +57,7 @@ module.exports.deleteMovie = (req, res, next) => {
           .then(() => res.status(200).send({ message: messageRemoveFilm })
             .catch((err) => {
               if (err.name === 'ValidationError') {
-                next(new BadRequestError('Некорректный идентификатор фильма'));
+                next(new BadRequestError(messageBadRequestErrorFilm));
               } else {
                 next(err);
               }

@@ -17,6 +17,13 @@ const messageNotFoundErrorFilm = 'Такого фильма нет';
 const messageRemoveFilm = 'Удален фильм';
 const messageErrorServer = ' Сервер упал ';
 const messageNotFoundErrorPage = 'Такой страницы нет';
+const messageBadRequestErrorFilm = 'Некорректный идентификатор фильма';
+const messageConflictErrorUser = 'Пользователь с такой почтой уже есть';
+const messageBadRequestErrorUser = 'В запросе отсутствует верные почта или пароль пользователя';
+const messageBadRequestErrorData = 'Данные пароля и/или почты неверные, измените';
+const messageBadRequestErrorUserId = 'Нет пользователя  с таким id';
+const messageBadRequestErrorBadData = 'Кривые данные';
+const messageConflictErrorUserEmail = 'Пользователь с таким email уже есть';
 const httpCors = [
   'https://diplomback.nomoredomains.work',
   'https://diplomfront.nomoredomains.work',
@@ -55,4 +62,11 @@ module.exports = {
   messageRemoveFilm,
   messageErrorServer,
   messageNotFoundErrorPage,
+  messageBadRequestErrorFilm,
+  messageConflictErrorUser,
+  messageBadRequestErrorUser,
+  messageBadRequestErrorData,
+  messageBadRequestErrorUserId,
+  messageBadRequestErrorBadData,
+  messageConflictErrorUserEmail,
 };
