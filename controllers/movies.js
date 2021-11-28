@@ -2,7 +2,9 @@ const Movie = require('../models/movies');
 const NotFoundError = require('../errors/NotFoundError');// 404 например, когда мы не нашли ресурс по переданному _id;
 const BadRequestError = require('../errors/BadRequestError');// 400 когда с запросом что-то не так;
 const ForbiddenError = require('../errors/ForbiddenError');// 403
-const messageBadRequestError = require('../utils/constants');
+const { messageBadRequestError } = require('../utils/constants');
+const { messageNotFoundErrorFilm } = require('../utils/constants');
+const { messageRemoveFilm } = require('../utils/constants');
 
 module.exports.getMovies = (req, res, next) => {
   const owner = req.userId;
@@ -37,7 +39,6 @@ module.exports.createMovie = (req, res, next) => {
       } else {
         next(err);
       }
-      // res.status(500).send({ message: `Произошла ошибка:  ${err.message}` });
     }).catch(next);
 };
 
@@ -47,16 +48,15 @@ module.exports.deleteMovie = (req, res, next) => {
   Movie.findById(movieId)
     //  выдает ошибку, если ни один документ не соответствует id
     .orFail(() => {
-      throw new NotFoundError('Такого фильма нет');
+      throw new NotFoundError(messageNotFoundErrorFilm);
     })
-
     .then((movie) => {
       if (movie.owner.toString() === owner) {
         return Movie.findByIdAndDelete(movieId)
-          .then(() => res.status(200).send({ message: 'Удален фильм' })
+          .then(() => res.status(200).send({ message: messageRemoveFilm })
             .catch((err) => {
               if (err.name === 'ValidationError') {
-                next(new BadRequestError('Нет такого id'));
+                next(new BadRequestError('Некорректный идентификатор фильма'));
               } else {
                 next(err);
               }
@@ -64,7 +64,6 @@ module.exports.deleteMovie = (req, res, next) => {
             .catch(next));
       }
 
-      // console.log('Чужой фильм');
-      throw new ForbiddenError(/* messageForbiddenError */'Чужой фильм нельзя удалить');
+      throw new ForbiddenError(messageForbiddenErrorDel);
     }).catch(next);
 };

@@ -15,7 +15,6 @@ const { errorLogger } = require('./middlewares/logger');
 
 const { httpCors, APP_PORT, MONGO_URI } = require('./utils/constants');
 
-const NotFoundError = require('./errors/NotFoundError');
 const CommonServerError = require('./errors/CommonServerError');
 
 const app = express();
@@ -25,6 +24,8 @@ app.disable('x-powered-by'); // отключим заголовок X-Powered-By
 
 const limiter = require('./utils/limiter');
 //const {defaultRoute} = require("./routes/main");
+
+const { messageErrorServer } = require('./utils/constants');
 
 const options = {
   origin: httpCors,
@@ -36,12 +37,10 @@ const options = {
 
 app.use(cors(options));
 
-// app.use(cors({origin: NODE_ENV === 'production' ? httpCors : credentials: true }));
-
 mongoose.connect(
   MONGO_URI,
   { useNewUrlParser: true },
-).then(() => console.log('connect mongo'));
+).then(() => console.log('Connect mongo'));
 
 mongoose.set('useCreateIndex', true);
 
@@ -54,15 +53,15 @@ app.use(limiter);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error(' Сервер упал ');
+    throw new Error(messageErrorServer);
   }, 0);
 });
-
-app.use(errors()); // обработчик ошибок celebrate
 
 app.use('/api/', routes);
 
 app.use('/*', defaultRoute404);
+
+app.use(errors()); // обработчик ошибок celebrate
 
 app.use(errorLogger);
 

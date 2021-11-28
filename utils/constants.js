@@ -11,7 +11,12 @@ const messageEmail = 'Измените формат почты - он непра
 const messageConflictError = 'Такой email в базе есть';
 const messageValidateError = 'Неправильный формат ссылки';
 const messageForbiddenError = 'Чужие карточки не удаляют';
+const messageForbiddenErrorDel = 'Чужой фильм нельзя удалить';
 const messageDelete = 'Карточка удалена';
+const messageNotFoundErrorFilm = 'Такого фильма нет';
+const messageRemoveFilm = 'Удален фильм';
+const messageErrorServer = ' Сервер упал ';
+const messageNotFoundErrorPage ='Такой страницы нет';
 const httpCors = [
   'https://diplomback.nomoredomains.work',
   'https://diplomfront.nomoredomains.work',
@@ -45,5 +50,9 @@ module.exports = {
   messageValidateError,
   messageForbiddenError,
   messageDelete,
- // node_const,
+  messageForbiddenErrorDel,
+  messageNotFoundErrorFilm,
+  messageRemoveFilm,
+  messageErrorServer,
+  messageNotFoundErrorPage
 };
