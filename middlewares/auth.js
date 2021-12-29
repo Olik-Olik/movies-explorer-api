@@ -3,9 +3,10 @@ const {UnAuthorizedError} = require('../errors/UnAuthorizedError');
 const { JWT_SECRET_KEY, messageUnAuthorizedError } = require('../utils/constants');
 
 module.exports = (req, res, next) => {
+  console.log('!!!');
   const {authorization} = req.headers;
 
-
+  console.log('ChT');
   if (!authorization || !authorization.startsWith('Bearer')) {
     throw new UnAuthorizedError('Необходима авторизация');
   }
@@ -23,8 +24,10 @@ module.exports = (req, res, next) => {
   try {
     jwt.verify(token, JWT_SECRET_KEY);
     req.userId = jwt.decode(token)._id;
+    console.log('userId attribute set.');
     next();
   } catch (e) {
+    console.log('E:' + e.toString());
     const err = new UnAuthorizedError('Необходима авторизация');
     next(err);
   }

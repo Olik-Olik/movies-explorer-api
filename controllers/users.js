@@ -3,9 +3,9 @@ const bcrypt = require('bcryptjs');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
-const ConflictError = require('../errors/ConflictError');
-const UnAuthorizedError = require('../errors/UnAuthorizedError');
-const BadRequestError = require('../errors/BadRequestError');
+const { ConflictError } = require('../errors/ConflictError');
+const { UnAuthorizedError } = require('../errors/UnAuthorizedError');
+const { BadRequestError } = require('../errors/BadRequestError');
 const {
   JWT_SECRET_KEY, messageUnAuthorizedError, messageConflictErrorUser,
   messageBadRequestErrorUser, messageBadRequestErrorData,
