@@ -64,7 +64,6 @@ module.exports.updateUser = (req, res, next) => {
   const { userId } = req;
   const newName = req.body.name;
   const newEmail = req.body.email;
-
   return User.findByIdAndUpdate(
     { _id: userId },
     {
@@ -95,11 +94,11 @@ module.exports.login = (req, res, next) => {
   const userPassword = req.body.password;
 
   return User.findUserByCredentials({ userEmail, userPassword }).then((user) => {
+
     if (!user) {
       throw new UnAuthorizedError(messageUnAuthorizedError);
     } else {
-      const token = jwt.sign(
-        { _id: user.data.id },
+      const token = jwt.sign({ _id: user.data.id },
         JWT_SECRET_KEY,
         { expiresIn: '7d' },
       );

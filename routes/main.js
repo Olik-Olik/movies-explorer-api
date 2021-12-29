@@ -1,6 +1,6 @@
 const routes = require('express').Router();
 // signin
-const { loginValidate } = require('../validator/validator');
+const { loginValidate }  = require('../validator/validator');
 // signup
 const { userValidate } = require('../validator/validator');
 

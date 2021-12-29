@@ -10,14 +10,14 @@ const validateURL = (value) => {
 
 const loginValidate = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
+    email: Joi.string().required().email().message({'any.required':'Заполните поле email'}),
     password: Joi.string().required().min(8),
   }),
 });
 
 const updateUserValidate = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(150).required(),
+    name: Joi.string().min(2).max(80).required(),
     email: Joi.string().required().email(),
   }),
 });
@@ -27,7 +27,7 @@ const userValidate = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
-    name: Joi.string().min(2).max(150),
+    name: Joi.string().min(2).max(80),
   }),
 });
 
@@ -45,13 +45,13 @@ const idValidator = celebrate({
 
 const movieValidate = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required().min(2).max(150),
-    director: Joi.string().required().min(2).max(150),
+    country: Joi.string().required().min(2).max(80),
+    director: Joi.string().required().min(2).max(80),
     duration: Joi.number().required(),
-    year: Joi.string().required().min(2).max(4),
+    year: Joi.number().required().min(2).max(4),
     description: Joi.string().required().min(2).max(3000),
-    nameRU: Joi.string().required().min(2).max(150),
-    nameEN: Joi.string().required().min(2).max(150),
+    nameRU: Joi.string().required().min(2).max(80),
+    nameEN: Joi.string().required().min(2).max(80),
     trailer: Joi.string().required().custom(validateURL),
     thumbnail: Joi.string().required().custom(validateURL),
     image: Joi.string().required().custom(validateURL),
