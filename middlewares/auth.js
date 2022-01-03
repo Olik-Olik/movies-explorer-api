@@ -5,9 +5,10 @@ const { JWT_SECRET_KEY, messageUnAuthorizedError } = require('../utils/constants
 module.exports = (req, res, next) => {
   console.log('!!!');
   const {authorization} = req.headers;
-
+  console.log(authorization);
   console.log('ChT');
   if (!authorization || !authorization.startsWith('Bearer')) {
+    console.log('No Auth!!!!!');
     throw new UnAuthorizedError('Необходима авторизация');
   }
 
