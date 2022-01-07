@@ -46,14 +46,14 @@ module.exports.createMovie = (req, res, next) => {
 module.exports.deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
   const owner = req.userId;
-  Movie.findById(movieId)
+  Movie.findOne({owner: owner, movieId: movieId})
     //  выдает ошибку, если ни один документ не соответствует id
     .orFail(() => {
       throw new NotFoundError(messageNotFoundErrorFilm);
     })
     .then((movie) => {
       if (movie.owner.toString() === owner) {
-        return Movie.findByIdAndDelete(movieId)
+        return Movie.findByIdAndDelete(movie._id)
           .then(() => res.status(200).send({ message: messageRemoveFilm })
             .catch((err) => {
               if (err.name === 'ValidationError') {
