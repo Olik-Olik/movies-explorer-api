@@ -37,7 +37,7 @@ const movieSchema = new mongoose.Schema({
   // — ссылка на постер к фильму. Обязательное поле-строка. Запишите её URL-адресом.
   image: {
     type: String,
-    required: true,
+    required: false,
     validate: {
       validator: (link) => isUrl(link),
     },

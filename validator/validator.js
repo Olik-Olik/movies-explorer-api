@@ -33,7 +33,7 @@ const userValidate = celebrate({
 
 const idParamsValidator = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().length(24).hex().required(),
+    movieId: Joi.string().hex().required(),
   }),
 });
 
@@ -48,13 +48,13 @@ const movieValidate = celebrate({
     country: Joi.string().required().min(2).max(80),
     director: Joi.string().required().min(2).max(80),
     duration: Joi.number().required(),
-    year: Joi.number().required().min(2).max(4),
+    year: Joi.string().required().min(2).max(4),
     description: Joi.string().required().min(2).max(3000),
     nameRU: Joi.string().required().min(2).max(80),
     nameEN: Joi.string().required().min(2).max(80),
     trailer: Joi.string().required().custom(validateURL),
     thumbnail: Joi.string().required().custom(validateURL),
-    image: Joi.string().required().custom(validateURL),
+    image: Joi.string().custom(validateURL),
     movieId: Joi.number().required(),
   }),
 });
