@@ -66,6 +66,18 @@ app.use(errorLogger);
 
 app.use(CommonServerError);
 
+/*
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(statusCode).send({
+    message: statusCode === 500
+      ? `На сервере произошла ошибк: ${err.toString()}` : message,
+  });
+  next();
+});
+*/
+
+
 app.listen(APP_PORT, () => {
   console.log(`Наш Волшебный Express is Working in console ${APP_PORT}`);
 });

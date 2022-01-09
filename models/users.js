@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const isEmail = require('validator/lib/isEmail');
 
-const { UnAuthorizedError } = require('../errors/UnAuthorizedError');
+const UnAuthorizedError = require('../errors/UnAuthorizedError');
 const { messageUnAuthorizedError } = require('../utils/constants');
 const { messageEmail } = require('../utils/constants');
 const { messageError } = require("../utils/constants");
@@ -58,7 +58,9 @@ userSchema.statics.findUserByCredentials = function ({ userEmail, userPassword }
           },
         };
       }
+      console.log("Password mismatch!");
       throw new UnAuthorizedError(messageUnAuthorizedError);
     });
 };
+
 module.exports = mongoose.model('user', userSchema);
